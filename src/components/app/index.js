@@ -13,7 +13,7 @@ class App extends Component {
       this.createNewTask("Editing task"),
       this.createNewTask("Active task"),
     ],
-    activeFilter: "all", // all || active || completed
+    activeFilter: "all",
   };
 
   createNewTask(label) {
@@ -31,14 +31,13 @@ class App extends Component {
       activeFilter: value,
     });
   };
-  // удаление элемента
+
   onTaskDelete = (id) => {
     this.setState(({ todoData }) => ({
       todoData: todoData.filter((i) => i.id !== id),
     }));
   };
 
-  // добавление элемента
   onTaskAdd = (message) => {
     const newItem = this.createNewTask(message);
 
@@ -47,7 +46,6 @@ class App extends Component {
     }));
   };
 
-  // обновление элемента
   toggleProperty(arr, id, propName) {
     return arr.map((todo) => {
       if (todo.id === id) {
@@ -105,9 +103,8 @@ class App extends Component {
           />
         </section>
       </section>
-    ); // JSX style
+    );
   }
 }
 
-// const el = React.createElement("h1", null, "helo world"); // JavaScript style
 export default App;

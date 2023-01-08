@@ -1,12 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Task from "../task";
 import "./task-list.css";
 
-const TodoList = ({ todos, onDeleted, onMakeActive, onComplete }) => {
+const TaskList = ({ todos, onDeleted, onMakeActive, onComplete }) => {
   const elements = todos.map((todo) => {
     const { id, ...itemProps } = todo;
-    // li class names completed | editing | empty string
     return (
       <li
         className={
@@ -29,7 +29,29 @@ const TodoList = ({ todos, onDeleted, onMakeActive, onComplete }) => {
       </li>
     );
   });
-  return <ul className="todo-list">{elements}</ul>; // сюда передали массив элементов JSX
+  return <ul className="todo-list">{elements}</ul>;
 };
 
-export default TodoList;
+TaskList.defaultProps = {
+  todos: [],
+  onDeleted: () => {},
+  onMakeActive: () => {},
+  onComplete: () => {},
+};
+TaskList.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      label: PropTypes.string,
+      created: PropTypes.instanceOf(Date),
+      completed: PropTypes.bool,
+      editing: PropTypes.bool,
+      active: PropTypes.bool,
+    })
+  ),
+  onDeleted: PropTypes.func,
+  onMakeActive: PropTypes.func,
+  onComplete: PropTypes.func,
+};
+
+export default TaskList;

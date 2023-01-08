@@ -1,4 +1,6 @@
 import React from "react";
+
+import PropTypes from "prop-types";
 import { formatDistanceToNow } from "date-fns";
 
 import "./task-list-item.css";
@@ -23,7 +25,9 @@ function TaskItem({
         />
         <label onClick={onMakeActive}>
           <span className="description">{label}</span>
-          <span className="created">{formatDistanceToNow(created)} ago</span>
+          <span className="created">
+            created {formatDistanceToNow(created)} ago
+          </span>
         </label>
         <button className="icon icon-edit"></button>
         <button className="icon icon-destroy" onClick={onDeleted}></button>
@@ -39,5 +43,24 @@ function TaskItem({
     </>
   );
 }
+
+TaskItem.defaultProps = {
+  label: "",
+  created: new Date(),
+  completed: false,
+  editing: false,
+  onMakeActive: false,
+  onDeleted: false,
+  onComplete: false,
+};
+TaskItem.propTypes = {
+  label: PropTypes.string,
+  created: PropTypes.instanceOf(Date),
+  completed: PropTypes.bool,
+  editing: PropTypes.bool,
+  onMakeActive: PropTypes.func,
+  onDeleted: PropTypes.func,
+  onComplete: PropTypes.func,
+};
 
 export default TaskItem;

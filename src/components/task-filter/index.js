@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "./task-filter.css";
 const buttons = [
@@ -34,5 +35,12 @@ const TaskFilter = ({ activeFilter, onFilterChange }) => {
     </ul>
   );
 };
-
+TaskFilter.defaultProps = {
+  activeFilter: "all",
+  onFilterChange: () => {},
+};
+TaskFilter.propTypes = {
+  activeFilter: PropTypes.string,
+  onFilterChange: PropTypes.func,
+};
 export default TaskFilter;

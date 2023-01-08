@@ -1,8 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import "./new-task-form.css";
 
 class NewTaskForm extends Component {
+  static defaultProps = {
+    onAdded: () => {},
+  };
+
+  static propTypes = {
+    onAdded: PropTypes.func,
+  };
   state = {
     label: "",
   };
@@ -47,4 +55,11 @@ class NewTaskForm extends Component {
   }
 }
 
+NewTaskForm.defaultProps = {
+  onAdded: () => {},
+};
+
+NewTaskForm.propTypes = {
+  onAdded: PropTypes.func,
+};
 export default NewTaskForm;
