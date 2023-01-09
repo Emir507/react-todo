@@ -4,7 +4,23 @@ import { formatDistanceToNow } from 'date-fns';
 
 import './task-list-item.css';
 
-function TaskItem({ label, created, active, completed, editing, onToggleActive, onDeleted, onComplete }) {
+function TaskItem({
+  label,
+  created,
+  active,
+  completed,
+  editing,
+  onToggleActive,
+  onToggleEditing,
+  onDeleted,
+  onComplete,
+  onLabelChange,
+}) {
+  function handleUpdatedDone(event) {
+    if (event.key === 'Enter') {
+      onToggleEditing();
+    }
+  }
   return (
     <>
       <div className="view">
@@ -21,10 +37,20 @@ function TaskItem({ label, created, active, completed, editing, onToggleActive, 
           <span className="description">{label}</span>
           <span className="created">created {formatDistanceToNow(created)} ago</span>
         </label>
-        <button type="submit" className="icon icon-edit" />
+        <button type="submit" className="icon icon-edit" onClick={onToggleEditing} />
         <button type="submit" className="icon icon-destroy" onClick={onDeleted} />
       </div>
-      {editing ? <input type="text" className="edit" value="Editing task" onChange={() => {}} /> : null}
+      {editing ? (
+        <input
+          autoFocus
+          type="text"
+          className="edit"
+          value={label}
+          onChange={(e) => onLabelChange(e.target.value)}
+          onBlur={onToggleEditing}
+          onKeyDown={handleUpdatedDone}
+        />
+      ) : null}
     </>
   );
 }
@@ -36,8 +62,10 @@ TaskItem.defaultProps = {
   completed: false,
   editing: false,
   onToggleActive: () => {},
+  onToggleEditing: () => {},
   onDeleted: () => {},
   onComplete: () => {},
+  onLabelChange: () => {},
 };
 TaskItem.propTypes = {
   label: PropTypes.string,
@@ -46,8 +74,10 @@ TaskItem.propTypes = {
   completed: PropTypes.bool,
   editing: PropTypes.bool,
   onToggleActive: PropTypes.func,
+  onToggleEditing: PropTypes.func,
   onDeleted: PropTypes.func,
   onComplete: PropTypes.func,
+  onLabelChange: PropTypes.func,
 };
 
 export default TaskItem;

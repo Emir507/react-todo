@@ -45,6 +45,12 @@ class App extends Component {
     }));
   };
 
+  onToggleEditing = (id) => {
+    this.setState(({ todoData }) => ({
+      todoData: App.toggleProperty(todoData, id, 'editing'),
+    }));
+  };
+
   onComplete = (id) => {
     this.setState(({ todoData }) => ({
       todoData: App.toggleProperty(todoData, id, 'completed'),
@@ -77,6 +83,17 @@ class App extends Component {
     }));
   };
 
+  onLabelChange = (value, id) => {
+    this.setState(({ todoData }) => ({
+      todoData: todoData.map((todo) => {
+        if (todo.id === id) {
+          todo.label = value;
+        }
+        return todo;
+      }),
+    }));
+  };
+
   render() {
     const { todoData, activeFilter } = this.state;
     const toDoCount = todoData.filter((todo) => !todo.completed).length;
@@ -91,8 +108,10 @@ class App extends Component {
           <TaskList
             todos={filteredTodoData}
             onDeleted={this.onTaskDelete}
-            onToggleActive={this.onToggleActive}
             onComplete={this.onComplete}
+            onLabelChange={this.onLabelChange}
+            onToggleActive={this.onToggleActive}
+            onToggleEditing={this.onToggleEditing}
           />
           <Footer
             toDo={toDoCount}
