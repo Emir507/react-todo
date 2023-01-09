@@ -73,7 +73,8 @@
             {
                 "props": false
             }
-        ]
+        ],
+        "no-console": "error"
     },
     "settings": {
         "import/resolver": {
