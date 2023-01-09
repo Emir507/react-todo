@@ -4,12 +4,20 @@ import { formatDistanceToNow } from 'date-fns';
 
 import './task-list-item.css';
 
-function TaskItem({ label, created, completed, editing, onMakeActive, onDeleted, onComplete }) {
+function TaskItem({ label, created, active, completed, editing, onToggleActive, onDeleted, onComplete }) {
   return (
     <>
       <div className="view">
-        <input className="toggle" type="checkbox" defaultChecked={completed} onChange={onComplete} />
-        <label onClick={onMakeActive}>
+        <input
+          className="toggle"
+          type="checkbox"
+          defaultChecked={completed}
+          onChange={() => {
+            if (active) onToggleActive();
+            onComplete();
+          }}
+        />
+        <label onClick={!completed ? onToggleActive : () => {}}>
           <span className="description">{label}</span>
           <span className="created">created {formatDistanceToNow(created)} ago</span>
         </label>
@@ -24,18 +32,20 @@ function TaskItem({ label, created, completed, editing, onMakeActive, onDeleted,
 TaskItem.defaultProps = {
   label: '',
   created: new Date(),
+  active: false,
   completed: false,
   editing: false,
-  onMakeActive: false,
-  onDeleted: false,
-  onComplete: false,
+  onToggleActive: () => {},
+  onDeleted: () => {},
+  onComplete: () => {},
 };
 TaskItem.propTypes = {
   label: PropTypes.string,
   created: PropTypes.instanceOf(Date),
+  active: PropTypes.bool,
   completed: PropTypes.bool,
   editing: PropTypes.bool,
-  onMakeActive: PropTypes.func,
+  onToggleActive: PropTypes.func,
   onDeleted: PropTypes.func,
   onComplete: PropTypes.func,
 };

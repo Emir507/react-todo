@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Task from '../task';
 import './task-list.css';
 
-function TaskList({ todos, onDeleted, onMakeActive, onComplete }) {
+function TaskList({ todos, onDeleted, onToggleActive, onComplete }) {
   const elements = todos.map((todo) => {
     const { id, ...itemProps } = todo;
     return (
       <li className={todo.completed ? 'completed' : todo.editing ? 'editing' : todo.active ? 'active' : ''} key={id}>
         <Task
           {...itemProps}
-          onMakeActive={() => onMakeActive(id)}
+          onToggleActive={() => onToggleActive(id)}
           onDeleted={() => onDeleted(id)}
           onComplete={() => onComplete(id)}
         />
@@ -24,7 +24,7 @@ function TaskList({ todos, onDeleted, onMakeActive, onComplete }) {
 TaskList.defaultProps = {
   todos: [],
   onDeleted: () => {},
-  onMakeActive: () => {},
+  onToggleActive: () => {},
   onComplete: () => {},
 };
 TaskList.propTypes = {
@@ -39,7 +39,7 @@ TaskList.propTypes = {
     })
   ),
   onDeleted: PropTypes.func,
-  onMakeActive: PropTypes.func,
+  onToggleActive: PropTypes.func,
   onComplete: PropTypes.func,
 };
 

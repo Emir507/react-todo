@@ -20,9 +20,8 @@ class App extends Component {
 
   static toggleProperty(arr, id, propName) {
     return arr.map((todo) => {
-      const item = { ...todo };
       if (todo.id === id) {
-        item[propName] = !todo[propName];
+        todo[propName] = !todo[propName];
       }
       return todo;
     });
@@ -32,23 +31,23 @@ class App extends Component {
     super();
     this.state = {
       todoData: [
-        this.createNewTask('Completed task'),
-        this.createNewTask('Editing task'),
-        this.createNewTask('Active task'),
+        App.createNewTask('Completed task'),
+        App.createNewTask('Editing task'),
+        App.createNewTask('Active task'),
       ],
       activeFilter: 'all',
     };
   }
 
-  onMakeActive = (id) => {
+  onToggleActive = (id) => {
     this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'active'),
+      todoData: App.toggleProperty(todoData, id, 'active'),
     }));
   };
 
   onComplete = (id) => {
     this.setState(({ todoData }) => ({
-      todoData: this.toggleProperty(todoData, id, 'completed'),
+      todoData: App.toggleProperty(todoData, id, 'completed'),
     }));
   };
 
@@ -71,7 +70,7 @@ class App extends Component {
   };
 
   onTaskAdd = (message) => {
-    const newItem = this.createNewTask(message);
+    const newItem = App.createNewTask(message);
 
     this.setState(({ todoData }) => ({
       todoData: [...todoData, newItem],
@@ -92,7 +91,7 @@ class App extends Component {
           <TaskList
             todos={filteredTodoData}
             onDeleted={this.onTaskDelete}
-            onMakeActive={this.onMakeActive}
+            onToggleActive={this.onToggleActive}
             onComplete={this.onComplete}
           />
           <Footer
