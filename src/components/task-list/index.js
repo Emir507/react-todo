@@ -1,25 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Task from "../task";
-import "./task-list.css";
+import Task from '../task';
+import './task-list.css';
 
-const TaskList = ({ todos, onDeleted, onMakeActive, onComplete }) => {
+function TaskList({ todos, onDeleted, onMakeActive, onComplete }) {
   const elements = todos.map((todo) => {
     const { id, ...itemProps } = todo;
     return (
-      <li
-        className={
-          todo.completed
-            ? "completed"
-            : todo.editing
-            ? "editing"
-            : todo.active
-            ? "active"
-            : ""
-        }
-        key={id}
-      >
+      <li className={todo.completed ? 'completed' : todo.editing ? 'editing' : todo.active ? 'active' : ''} key={id}>
         <Task
           {...itemProps}
           onMakeActive={() => onMakeActive(id)}
@@ -30,7 +19,7 @@ const TaskList = ({ todos, onDeleted, onMakeActive, onComplete }) => {
     );
   });
   return <ul className="todo-list">{elements}</ul>;
-};
+}
 
 TaskList.defaultProps = {
   todos: [],

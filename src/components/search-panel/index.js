@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import "./search-panel.css";
+import './search-panel.css';
 
-const SearchPanel = () => {
-  const searchText = "Type here to search";
+function SearchPanel() {
+  const searchText = 'Type here to search';
   const searchStyle = {
-    fontSize: "20px",
+    fontSize: '20px',
   };
   return (
     <div className="search-panel">
       <input placeholder={searchText} style={searchStyle} />
     </div>
   );
-};
+}
 
 export default SearchPanel;
