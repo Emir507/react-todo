@@ -67,8 +67,6 @@ function App() {
 
   const toDoCount = todoData.filter((todo) => !todo.completed).length;
   const filteredTodoData = activeFilter === 'all' ? todoData : todoData.filter((todo) => todo[activeFilter]);
-  // eslint-disable-next-line
-  console.log(todoData);
   return (
     <section className="todoapp">
       <header className="header">
