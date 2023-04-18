@@ -44,7 +44,10 @@ body {
 .hidden {
   display: none;
 }
-
+.header {
+  position: relative;
+  z-index: 3;
+}
 .todoapp {
   background: #fff;
   margin: 130px 0 40px 0;

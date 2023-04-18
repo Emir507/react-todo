@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import NewTaskForm from '../new-task-form';
 import TaskList from '../task-list';
@@ -6,8 +6,8 @@ import Footer from '../footer';
 
 import './app.css';
 
-class App extends Component {
-  static createNewTask(label) {
+function App() {
+  function createNewTask(label) {
     return {
       id: Math.floor(Date.now() * Math.random()),
       label,
@@ -17,8 +17,7 @@ class App extends Component {
       active: false,
     };
   }
-
-  static toggleProperty(arr, id, propName) {
+  function toggleProperty(arr, id, propName) {
     return arr.map((todo) => {
       if (todo.id === id) {
         todo[propName] = !todo[propName];
@@ -26,103 +25,74 @@ class App extends Component {
       return todo;
     });
   }
-
-  constructor() {
-    super();
-    this.state = {
-      todoData: [
-        App.createNewTask('Completed task'),
-        App.createNewTask('Editing task'),
-        App.createNewTask('Active task'),
-      ],
-      activeFilter: 'all',
-    };
-  }
-
-  onToggleActive = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: App.toggleProperty(todoData, id, 'active'),
-    }));
+  const [todoData, setTodoData] = useState([
+    createNewTask('Completed task'),
+    createNewTask('Editing task'),
+    createNewTask('Active task'),
+  ]);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const onToggleActive = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'active'));
   };
-
-  onToggleEditing = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: App.toggleProperty(todoData, id, 'editing'),
-    }));
+  const onToggleEditing = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'editing'));
   };
-
-  onComplete = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: App.toggleProperty(todoData, id, 'completed'),
-    }));
+  const onComplete = (id) => {
+    setTodoData(toggleProperty(todoData, id, 'completed'));
   };
-
-  onClearCompleted = () => {
-    this.setState(({ todoData }) => ({
-      todoData: todoData.filter((todo) => !todo.completed),
-    }));
+  const onClearCompleted = () => {
+    setTodoData(todoData.filter((todo) => !todo.completed));
   };
-
-  onFilterChange = (value) => {
-    this.setState({
-      activeFilter: value,
-    });
+  const onFilterChange = (value) => {
+    setActiveFilter(value);
   };
-
-  onTaskDelete = (id) => {
-    this.setState(({ todoData }) => ({
-      todoData: todoData.filter((i) => i.id !== id),
-    }));
+  const onTaskDelete = (id) => {
+    setTodoData(todoData.filter((i) => i.id !== id));
   };
+  const onTaskAdd = (message) => {
+    const newItem = createNewTask(message);
 
-  onTaskAdd = (message) => {
-    const newItem = App.createNewTask(message);
-
-    this.setState(({ todoData }) => ({
-      todoData: [...todoData, newItem],
-    }));
+    setTodoData([...todoData, newItem]);
   };
-
-  onLabelChange = (value, id) => {
-    this.setState(({ todoData }) => ({
-      todoData: todoData.map((todo) => {
+  const onLabelChange = (value, id) => {
+    setTodoData(
+      todoData.map((todo) => {
         if (todo.id === id) {
           todo.label = value;
         }
         return todo;
-      }),
-    }));
+      })
+    );
   };
 
-  render() {
-    const { todoData, activeFilter } = this.state;
-    const toDoCount = todoData.filter((todo) => !todo.completed).length;
-    const filteredTodoData = activeFilter === 'all' ? todoData : todoData.filter((todo) => todo[activeFilter]);
-    return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>Todos</h1>
-          <NewTaskForm onAdded={this.onTaskAdd} />
-        </header>
-        <section className="main">
-          <TaskList
-            todos={filteredTodoData}
-            onDeleted={this.onTaskDelete}
-            onComplete={this.onComplete}
-            onLabelChange={this.onLabelChange}
-            onToggleActive={this.onToggleActive}
-            onToggleEditing={this.onToggleEditing}
-          />
-          <Footer
-            toDo={toDoCount}
-            onFilterChange={this.onFilterChange}
-            activeFilter={activeFilter}
-            onClearCompleted={this.onClearCompleted}
-          />
-        </section>
+  const toDoCount = todoData.filter((todo) => !todo.completed).length;
+  const filteredTodoData = activeFilter === 'all' ? todoData : todoData.filter((todo) => todo[activeFilter]);
+  // eslint-disable-next-line
+  console.log(todoData);
+  return (
+    <section className="todoapp">
+      <header className="header">
+        <h1>Todos</h1>
+        <NewTaskForm onAdded={onTaskAdd} />
+      </header>
+      <section className="main">
+        <TaskList
+          todos={filteredTodoData}
+          onDeleted={onTaskDelete}
+          onComplete={onComplete}
+          onLabelChange={onLabelChange}
+          onToggleActive={onToggleActive}
+          onToggleEditing={onToggleEditing}
+        />
+        <Footer
+          toDo={toDoCount}
+          onFilterChange={onFilterChange}
+          activeFilter={activeFilter}
+          onClearCompleted={onClearCompleted}
+        />
       </section>
-    );
-  }
+    </section>
+  );
 }
 
 export default App;
